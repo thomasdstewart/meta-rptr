@@ -5,6 +5,8 @@ LICENSE = "MIT"
 inherit packagegroup
 
 RDEPENDS_${PN} = "\
+    wireless-tools \
+    wpa-supplicant \
     readkey \
     tapecontrol \
 "
