@@ -12,12 +12,13 @@ RDEPENDS_${PN} += " \
 
 SRC_URI = "file://readkey.py"
 
-#inherit autotools update-rc.d systemd
-
-INITSCRIPT_NAME = "dropbear"
-INITSCRIPT_PARAMS = "defaults 10"
-
 S = "${WORKDIR}"
+
+inherit autotools update-rc.d
+
+INITSCRIPT_NAME = "file://readkey"
+INITSCRIPT_PARAMS = "defaults 99"
+
 
 do_install() {
 	     install -d ${D}${bindir}

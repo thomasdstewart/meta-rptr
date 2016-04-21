@@ -8,10 +8,14 @@ RDEPENDS_${PN} += " \
     python-pprint \
 "
 
-
 SRC_URI = "file://tapecontrol.py"
 
 S = "${WORKDIR}"
+
+inherit autotools update-rc.d
+
+INITSCRIPT_NAME = "tapecontrol"
+INITSCRIPT_PARAMS = "defaults 99"
 
 do_install() {
 	     install -d ${D}${bindir}
