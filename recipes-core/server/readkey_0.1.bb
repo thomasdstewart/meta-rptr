@@ -1,5 +1,5 @@
 SUMMARY = "Read Key"
-#SECTION = "examples"
+SECTION = "console/utils"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 RDEPENDS_${PN} += " \
@@ -10,17 +10,16 @@ RDEPENDS_${PN} += " \
     python-pprint \
 "
 
-SRC_URI = "file://readkey.py"
-
+SRC_URI = "file://readkey file://init"
 S = "${WORKDIR}"
 
-inherit autotools update-rc.d
+inherit update-rc.d
 
-INITSCRIPT_NAME = "file://readkey"
+INITSCRIPT_NAME = "readkey"
 INITSCRIPT_PARAMS = "defaults 99"
 
-
 do_install() {
-	     install -d ${D}${bindir}
-	     install -m 0755 readkey.py ${D}${bindir}
+        install -d ${D}${sysconfdir} ${D}${sysconfdir}/init.d ${D}${bindir}
+        install -m 0755 init ${D}{${sysconfdir}/init.d/readkey
+        install -m 0755 readkey ${D}${bindir}
 }
