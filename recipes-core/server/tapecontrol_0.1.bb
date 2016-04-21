@@ -18,6 +18,6 @@ INITSCRIPT_PARAMS = "defaults 99"
 
 do_install() {
         install -d ${D}${sysconfdir} ${D}${sysconfdir}/init.d ${D}${bindir}
-        install -m 0755 init ${D}{${sysconfdir}/init.d/tapecontrol
+        install -m 0755 init ${D}${sysconfdir}/init.d/tapecontrol
         install -m 0755 tapecontrol ${D}${bindir}
 }
