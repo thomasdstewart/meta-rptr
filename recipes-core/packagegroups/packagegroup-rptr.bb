@@ -6,9 +6,9 @@ inherit packagegroup
 
 RDEPENDS_${PN} = "\
     linux-firmware \
-    iptables \
     wireless-tools \
     wpa-supplicant \
+    firewall \
     readkey \
     tapecontrol \
 "

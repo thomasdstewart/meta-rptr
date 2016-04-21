@@ -1,0 +1,71 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:             firewall
+# Required-Start:       $networking
+# Required-Stop:        
+# Default-Start:        2 3 4 5
+# Default-Stop:         1
+# Short-Description:    firewall
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/bin/readkey
+NAME=firewall
+DESC=Firewall
+
+set -e
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+        iptables -t filter -P INPUT DROP
+        iptables -t filter -P FORWARD DROP
+        iptables -t filter -P OUTPUT DROP
+
+        iptables -t filter -A INPUT -i lo -j ACCEPT
+        iptables -t filter -A OUTPUT -o lo -j ACCEPT
+
+        iptables -t filter -A INPUT -m conntrack --ctstate INVALID -j DROP
+        iptables -t filter -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+        iptables -t filter -A OUTPUT -m conntrack --ctstate INVALID -j DROP
+        iptables -t filter -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+        iptables -t filter -A INPUT -p icmp -j ACCEPT
+        iptables -t filter -A OUTPUT -p icmp -j ACCEPT
+
+        iptables -t filter -A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+
+        iptables -t filter -A INPUT -j NFLOG --nflog-prefix  INPUT
+        iptables -t filter -A FORWARD -j NFLOG --nflog-prefix  FORWARD
+        iptables -t filter -A OUTPUT -j NFLOG --nflog-prefix  OUTPUT
+
+        iptables -t filter -A INPUT -j REJECT --reject-with icmp-admin-prohibited
+        iptables -t filter -A FORWARD -j REJECT --reject-with icmp-admin-prohibited
+        iptables -t filter -A OUTPUT -j REJECT --reject-with icmp-admin-prohibited
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        iptables -t filter -P INPUT ACCEPT
+        iptables -t filter -P FORWARD ACCEPT
+        iptables -t filter -P OUTPUT ACCEPT
+        iptables -t filter -F INPUT
+        iptables -t filter -F FORWARD
+        iptables -t filter -F OUTPUT
+        echo "$NAME."
+        ;;
+  restart|force-reload)
+        echo -n "Restarting $DESC: "
+        $0 stop
+        sleep 1
+        $0 stop
+        echo "$NAME."
+        ;;
+  *)
+        N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
