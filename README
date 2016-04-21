@@ -9,25 +9,25 @@ Dependencies
 
 This layer depends on:
 
-  URI: git://git.openembedded.org/bitbake
-  branch: master
+  URI: http://git.yoctoproject.org/git/poky
+  branch: krogoth
 
-  URI: git://git.openembedded.org/openembedded-core
-  layers: meta
-  branch: master
+  URI: http://git.openembedded.org/meta-openembedded
+  layers: meta-oe, meta-python
+  branch: krogoth
 
-  URI: git://git.yoctoproject.org/xxxx
-  layers: xxxx
+  URI: http://git.yoctoproject.org/git/meta-raspberrypi
+  layers: meta-raspberrypi
   branch: master
 
 
 Patches
 =======
 
-Please submit any patches against the meta-rptr layer to the
-xxxx mailing list (xxxx@zzzz.org) and cc: the maintainer:
+Please submit any patches against the meta-rptr layer to
+thomas@stewarts.org.uk.
 
-Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
+Maintainer: Thomas Stewart <thomas@stewarts.org.uk>
 
 
 Table of Contents
@@ -54,6 +54,9 @@ other layers needed. e.g.:
     /path/to/yocto/meta \
     /path/to/yocto/meta-poky \
     /path/to/yocto/meta-yocto-bsp \
+    /path/to/yocto/meta-openembedded/meta-oe \
+    /path/to/yocto/meta-openembedded/meta-python \
+    /path/to/yocto/meta-raspberrypi \
     /path/to/yocto/meta-meta-rptr \
     "
 
