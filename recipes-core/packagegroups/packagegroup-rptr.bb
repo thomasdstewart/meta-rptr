@@ -8,6 +8,7 @@ RDEPENDS_${PN} = "\
     linux-firmware \
     wireless-tools \
     wpa-supplicant \
+    crda \
     firewall \
     readkey \
     tapecontrol \
