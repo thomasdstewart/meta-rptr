@@ -18,19 +18,23 @@ set -e
 case "$1" in
   start)
         echo -n "Starting $DESC: "
-        start-stop-daemon -S -x "$DAEMON" -n $NAME
+        #start-stop-daemon -S -x "$DAEMON" -b
+        $DAEMON &
         echo "$NAME."
         ;;
   stop)
         echo -n "Stopping $DESC: "
-        start-stop-daemon -K -x "$DAEMON" -n $NAME
+        #start-stop-daemon -K -n $NAME
+        ps | grep "$DAEMON" | grep -v grep | awk '{print $1}' | xargs kill
         echo "$NAME."
         ;;
   restart|force-reload)
         echo -n "Restarting $DESC: "
-        start-stop-daemon -K -x "$DAEMON" -n $NAME
+        #start-stop-daemon -K -n $NAME
+        ps | grep "$DAEMON" | grep -v grep | awk '{print $1}' | xargs kill
         sleep 1
-        start-stop-daemon -S -x "$DAEMON" -n $NAME
+        #start-stop-daemon -S -x "$DAEMON" -b
+        $DAEMON &
         echo "$NAME."
         ;;
   *)
