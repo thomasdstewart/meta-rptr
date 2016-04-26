@@ -4,6 +4,12 @@ This is a yocto project (https://www.yoctoproject.org/) layer containing recipes
 
 This README file contains information on the contents of the meta-rptr layer. Please see the corresponding sections below for yocto and poky specific details. See http://www.stewarts.org.uk/tomsweb/RaspebrryPiTapeRemote#Proper_software_with_yocto for details how to build an image from scratch using this layer.
 
+TODO:
+ * switch to systemd
+ * improve python scripts
+ * train flirc
+ * write app
+
 2. Dependencies
 ===============
 
