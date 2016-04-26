@@ -1,54 +1,37 @@
-This README file contains information on the contents of the
-meta-rptr layer.
+1. Introduction
+===============
+This is a [[https://www.yoctoproject.org/|yocto project]] layer containing recipes to build a Raspberry Pi image that can control a reel to reel tape recorder with a normal IR remote control. See [[http://www.stewarts.org.uk/tomsweb/RaspebrryPiTapeRemote]] for more details.
 
-Please see the corresponding sections below for details.
+This README file contains information on the contents of the meta-rptr layer. Please see the corresponding sections below for yocto and poky specific details. See [[http://www.stewarts.org.uk/tomsweb/RaspebrryPiTapeRemote#Proper_software_with_yocto]] for details how to build an image from scratch using this layer.
 
-
-Dependencies
-============
+2. Dependencies
+===============
 
 This layer depends on:
 
   URI: http://git.yoctoproject.org/git/poky
+  layers: meta, meta-poky, meta-yocto-bsp
   branch: krogoth
 
   URI: http://git.openembedded.org/meta-openembedded
-  layers: meta-oe, meta-python
+  layers: meta-oe, meta-python, meta-networking
   branch: krogoth
 
   URI: http://git.yoctoproject.org/git/meta-raspberrypi
   layers: meta-raspberrypi
   branch: master
 
-
-Patches
-=======
-
-Please submit any patches against the meta-rptr layer to
-thomas@stewarts.org.uk.
+3. Patches
+==========
+Please submit any patches against the meta-rptr layer to the maintainer.
 
 Maintainer: Thomas Stewart <thomas@stewarts.org.uk>
 
+4. Using 
+========
+In order to use this layer, you need to make the build system aware of it.
 
-Table of Contents
-=================
-
-  I. Adding the meta-rptr layer to your build
- II. Misc
-
-
-I. Adding the meta-rptr layer to your build
-=================================================
-
---- replace with specific instructions for the meta-rptr layer ---
-
-In order to use this layer, you need to make the build system aware of
-it.
-
-Assuming the meta-rptr layer exists at the top-level of your
-yocto build tree, you can add it to the build system by adding the
-location of the meta-rptr layer to bblayers.conf, along with any
-other layers needed. e.g.:
+Assuming the meta-rptr layer exists at the top-level of your yocto build tree, you can add it to the build system by adding the location of the meta-rptr layer to bblayers.conf, along with any other layers needed. e.g.:
 
   BBLAYERS ?= " \
     /path/to/yocto/meta \
@@ -61,8 +44,13 @@ other layers needed. e.g.:
     /path/to/yocto/meta-meta-rptr \
     "
 
+This adds an image called rpi-rptr-image. It expects some configuration to be defined in build/conf/local.conf. Add the following to local.conf:
 
-II. Misc
-========
+{{{
+MACHINE ?= "raspberrypi"
+ROOT_PASSWORD = "my_password_for_root_ssh"
+WIFI_SSID = "my_ssid_name"
+WIFI_PSK = "my_ssid_pre_shared_key"
+}}}
 
---- replace with specific information about the meta-rptr layer ---
+Then run "bitbake rpi-rptr-image" and it should produce a working image.
