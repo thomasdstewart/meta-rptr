@@ -1,0 +1,5 @@
+[Match]
+Name=w*
+
+[Network]
+DHCP=ipv4
