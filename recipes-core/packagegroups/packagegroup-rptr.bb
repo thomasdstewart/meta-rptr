@@ -9,7 +9,8 @@ RDEPENDS_${PN} = "\
     wireless-tools \
     wpa-supplicant \
     crda \
-    firewall \
     readkey \
     tapecontrol \
 "
+
+#    firewall \

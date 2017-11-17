@@ -9,6 +9,7 @@ RDEPENDS_${PN} += " \
 "
 
 SRC_URI = "file://tapecontrol file://init file://tapecontrol.service"
+S = "${WORKDIR}"
 
 inherit update-rc.d systemd
 

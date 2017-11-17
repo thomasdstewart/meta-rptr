@@ -11,6 +11,7 @@ RDEPENDS_${PN} += " \
 "
 
 SRC_URI = "file://readkey file://init file://readkey.service"
+S = "${WORKDIR}"
 
 inherit update-rc.d systemd
 
