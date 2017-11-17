@@ -10,16 +10,23 @@ RDEPENDS_${PN} += " \
     python-pprint \
 "
 
-SRC_URI = "file://readkey file://init"
-S = "${WORKDIR}"
+SRC_URI = "file://readkey file://init file://readkey.service"
 
-inherit update-rc.d
+inherit update-rc.d systemd
 
 INITSCRIPT_NAME = "readkey"
-INITSCRIPT_PARAMS = "defaults 99"
+INITSCRIPT_PARAMS = "defaults 90 10"
+
+SYSTEMD_PACKAGES = "${PN}"
+SYSTEMD_SERVICE_${PN} = "readkey.service"
 
 do_install() {
-        install -d ${D}${sysconfdir} ${D}${sysconfdir}/init.d ${D}${bindir}
-        install -m 0755 init ${D}${sysconfdir}/init.d/readkey
-        install -m 0755 readkey ${D}${bindir}
+    install -d ${D}${sysconfdir}/init.d
+    install -m 0755 init ${D}${sysconfdir}/init.d/readkey
+
+    install -d ${D}${systemd_unitdir}/system
+    install -m 0644 readkey.service ${D}${systemd_unitdir}/system
+
+    install -d ${D}${bindir} 
+    install -m 0755 readkey ${D}${bindir}
 }

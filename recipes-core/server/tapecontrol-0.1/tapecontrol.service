@@ -1,0 +1,10 @@
+[Unit]
+Description=Raspebrry Pi Tape Remote TapeControl
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/tapecontrol
+
+[Install]
+WantedBy=multi-user.target

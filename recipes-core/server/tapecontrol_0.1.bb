@@ -8,16 +8,23 @@ RDEPENDS_${PN} += " \
     python-pprint \
 "
 
-SRC_URI = "file://tapecontrol file://init"
-S = "${WORKDIR}"
+SRC_URI = "file://tapecontrol file://init file://tapecontrol.service"
 
-inherit update-rc.d
+inherit update-rc.d systemd
 
 INITSCRIPT_NAME = "tapecontrol"
-INITSCRIPT_PARAMS = "defaults 99"
+INITSCRIPT_PARAMS = "defaults 90 10"
+
+SYSTEMD_PACKAGES = "${PN}"
+SYSTEMD_SERVICE_${PN} = "tapecontrol.service"
 
 do_install() {
-        install -d ${D}${sysconfdir} ${D}${sysconfdir}/init.d ${D}${bindir}
-        install -m 0755 init ${D}${sysconfdir}/init.d/tapecontrol
-        install -m 0755 tapecontrol ${D}${bindir}
+    install -d ${D}${sysconfdir}/init.d
+    install -m 0755 init ${D}${sysconfdir}/init.d/tapecontrol
+
+    install -d ${D}${systemd_unitdir}/system
+    install -m 0644 tapecontrol.service ${D}${systemd_unitdir}/system
+
+    install -d ${D}${bindir}
+    install -m 0755 tapecontrol ${D}${bindir}
 }
