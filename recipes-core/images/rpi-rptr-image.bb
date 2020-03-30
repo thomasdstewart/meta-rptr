@@ -1,5 +1,4 @@
-# Base this image on rpi-hwup-image
-include recipes-core/images/rpi-hwup-image.bb
+include recipes-core/images/core-image-minimal.bb
 
 IMAGE_FEATURES += "ssh-server-dropbear read-only-rootfs"
 IMAGE_FEATURES_remove = " debug-tweaks splash"
