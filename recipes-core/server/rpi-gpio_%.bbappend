@@ -1,0 +1,1 @@
+inherit pypi setuptools3
