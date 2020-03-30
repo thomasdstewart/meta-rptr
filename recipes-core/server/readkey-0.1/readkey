@@ -1,22 +1,35 @@
 #!/usr/bin/env python3
+import logging
 import evdev
 import urllib
 import sys
-#from pprint import pprint as pp
+from pprint import pprint as pp
 
+logging.basicConfig(level=logging.INFO,
+                    format="%(levelname)s %(asctime)s %(message)s")
+
+logging.info("listing devices")
 devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
 
-flirc = '/dev/input/event0'
+flirc = None
 for dev in devices:
     if('flirc' in dev.name):
-        flirc=dev.fn
+        flirc = dev.fn
+        logging.info("found device: %s" % flirc)
 
+if flirc is None:
+    logging.info("device not found")
+    sys.exit()
+
+logging.info("opening device")
 dev = evdev.InputDevice(flirc)
 
+logging.info("reading events")
 for event in dev.read_loop():
     if(event.type == evdev.ecodes.EV_KEY and event.value == 1):
         key = evdev.ecodes.KEY[event.code]
-        #pp(key)
+        logging.info("got key: %s" % key)
+
         if(key == 'KEY_PLAYPAUSE'):
             urllib.request.urlopen("http://localhost:5000/play").read()
 
