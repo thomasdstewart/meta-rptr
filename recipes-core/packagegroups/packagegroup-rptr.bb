@@ -8,6 +8,7 @@ RDEPENDS_${PN} = "\
     crda \
     iptables \
     iw \
+    kernel-modules \
     linux-firmware \
     readkey \
     tapecontrol \
