@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import logging
 import evdev
-import urllib
+import urllib.request
 import sys
 from pprint import pprint as pp
 
@@ -13,15 +13,15 @@ devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
 
 flirc = None
 for dev in devices:
-    if('flirc' in dev.name):
-        flirc = dev.fn
+    if('flirc.tv flirc Consumer Control' in dev.name):
+        flirc = dev.path
         logging.info("found device: %s" % flirc)
 
 if flirc is None:
     logging.info("device not found")
     sys.exit()
 
-logging.info("opening device")
+logging.info("opening device: %s" % flirc)
 dev = evdev.InputDevice(flirc)
 
 logging.info("reading events")
@@ -30,20 +30,35 @@ for event in dev.read_loop():
         key = evdev.ecodes.KEY[event.code]
         logging.info("got key: %s" % key)
 
-        if(key == 'KEY_PLAYPAUSE'):
-            urllib.request.urlopen("http://localhost:5000/play").read()
-
-        #if(key == 'KEY_'):
-        #    urllib.request.urlopen("http://localhost:5000/pause").read()
-
-        if(key == 'KEY_STOPCD'):
-            urllib.request.urlopen("http://localhost:5000/stop").read()
+        #Flirc-3.25.3 my_flirc_config in base64
+        #ACO1kAVixQ8Os2a7gP14tGY7vJu4t2YiqzY7zWZ7ZiSm6mY=
 
         if(key == 'KEY_FASTFORWARD'):
-            urllib.request.urlopen("http://localhost:5000/fastforward").read()
+            cmd = 'fastforward'
+
+        if(key == 'KEY_PLAYPAUSE'):
+            cmd = 'play'
 
         if(key == 'KEY_REWIND'):
-            urllib.request.urlopen("http://localhost:5000/rewind").read()
+            cmd = 'rewind'
 
-        #if(key == 'KEY_'):
-        #    urllib.request.urlopen("http://localhost:5000/record").read()
+        if(key == 'KEY_STOPCD'):
+            cmd = 'stop'
+
+        #if(key == 'KEY_RECORD'):
+        #    cmd = 'record'
+
+        if(key == 'KEY_VOLUMEDOWN'):
+            cmd = 'pause'
+
+        url = 'http://localhost:5000/%s' % cmd
+
+        logging.info("requesting: %s" % url)
+
+        req = urllib.request.Request(url)
+        try:
+            res = urllib.request.urlopen(req)
+            logging.info("response: %s" % res.read())
+        except urllib.error.URLError as e:
+            logging.info("error: %s" % e.reason)
+
