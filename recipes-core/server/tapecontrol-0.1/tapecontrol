@@ -9,58 +9,79 @@ from pprint import pprint as pp
 logging.basicConfig(level=logging.INFO,
                     format="%(levelname)s %(asctime)s %(message)s")
 
-enable = 4
-fastforward = 17
-play = 18
-rewind = 22
-stop = 23
-record = 24
-pause = 25
+pins = {}
+pins['enable'] = 4
+pins['fastforward'] = 17
+pins['play'] = 18
+pins['rewind'] = 22
+pins['stop'] = 23
+pins['record'] = 24
+pins['pause'] = 25
+
+func_pins = list(pins.values())
+func_pins.remove(pins['enable'])
+
 on = GPIO.LOW
 off = GPIO.HIGH
 
 def init():
+    logging.info("disable GPIO warnings")
+    GPIO.setwarnings(False)
+
+    logging.info("setting pin mode to bcm")
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(enable, GPIO.OUT)
-    GPIO.output(enable, off)
+
+    logging.info("set all relays to in mode") # switches off
+    GPIO.setup(func_pins, GPIO.IN)
     logging.info("sleeping")
-    time.sleep(0.2)
-    GPIO.setup([fastforward, play, rewind, stop, record, pause], GPIO.OUT)
+    time.sleep(0.1)
+
+    logging.info("set enable relay to out mode")
+    GPIO.setup(pins['enable'], GPIO.OUT)
     logging.info("sleeping")
-    time.sleep(0.2)
-    GPIO.output([fastforward, play, rewind, stop, record, pause], off)
+    time.sleep(0.1)
+
+    logging.info("turn off enable relay")
+    GPIO.output(pins['enable'], off)
     logging.info("sleeping")
-    time.sleep(0.2)
-    GPIO.output(enable, on)
+    time.sleep(0.1)
+
+    logging.info("set all other relays to out mode")
+    GPIO.setup(func_pins, GPIO.OUT)
+    logging.info("sleeping")
+    time.sleep(0.1)
+
+    logging.info("turn off all other relays")
+    GPIO.output(func_pins, off)
+    logging.info("sleeping")
+    time.sleep(0.1)
+
+    logging.info("turn on enable relay")
+    GPIO.output(pins['enable'], on)
+    logging.info("sleeping")
+    time.sleep(0.1)
 
 def clean():
-    GPIO.output(enable, off)
+    GPIO.output(pins['enable'], off)
     GPIO.cleanup()
 
 def togglecmd(cmd):
-    logging.info("got cmd: %s" % cmd)
-    if(cmd == 'fastforward'):
-        cmd = fastforward
-    elif(cmd == 'play'):
-        cmd = play
-    elif(cmd == 'rewind'):
-        cmd = rewind
-    elif(cmd == 'stop'):
-        cmd = stop
-    elif(cmd == 'record'):
-        cmd = record
-    elif(cmd == 'pause'):
-        cmd = pause
-    else:
+    cmds = ['fastforward', 'play', 'rewind', 'stop', 'record', 'pause']
+    if(cmd not in cmds):
         logging.info("unknown cmd: %s" % cmd)
         return
 
-    logging.info("sending cmd %s on" % cmd)
-    GPIO.output(cmd, on)
-    logging.info("sleeping" % cmd)
+    logging.info("got cmd: %s" % cmd)
+
+    logging.info("turning %s relay on" % cmd)
+    GPIO.output(pins[cmd], on)
+    logging.info("sleeping")
     time.sleep(0.2)
-    logging.info("sending cmd %s off" % cmd)
-    GPIO.output(cmd, off)
+
+    logging.info("turning %s relay off" % cmd)
+    GPIO.output(pins[cmd], off)
+    logging.info("sleeping")
+    time.sleep(0.2)
 
 html='''
 <p>
@@ -74,6 +95,7 @@ html='''
 '''
 
 app = Flask(__name__)
+
 @app.route('/')
 def help():
     return html
@@ -89,6 +111,6 @@ if __name__ == '__main__':
     init() 
     app.debug = True
     logging.info("listening")
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=80, use_reloader=False)
     clean()
 

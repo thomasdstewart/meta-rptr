@@ -14,7 +14,7 @@ devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
 flirc = None
 for dev in devices:
     if('flirc.tv flirc Consumer Control' in dev.name):
-        flirc = dev.path
+        flirc = dev.fn
         logging.info("found device: %s" % flirc)
 
 if flirc is None:
@@ -51,7 +51,7 @@ for event in dev.read_loop():
         if(key == 'KEY_VOLUMEDOWN'):
             cmd = 'pause'
 
-        url = 'http://localhost:5000/%s' % cmd
+        url = 'http://localhost/%s' % cmd
 
         logging.info("requesting: %s" % url)
 

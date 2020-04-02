@@ -1,12 +1,10 @@
 1. Introduction
 ===============
-This is a yocto project (https://www.yoctoproject.org/) layer containing recipes to build a Raspberry Pi image that can control a reel to reel tape recorder with a normal IR remote control. See http://www.stewarts.org.uk/tomsweb/RaspebrryPiTapeRemote for more details.
+This is a yocto project (https://www.yoctoproject.org/) layer containing recipes to build a Raspberry Pi image that can control a reel to reel tape recorder with a normal IR remote control. See http://www.stewarts.org.uk/tomsweb/raspberrypitaperemote for more details.
 
-This README file contains information on the contents of the meta-rptr layer. Please see the corresponding sections below for yocto and poky specific details. See http://www.stewarts.org.uk/tomsweb/RaspebrryPiTapeRemote#Proper_software_with_yocto for details how to build an image from scratch using this layer.
+This README file contains information on the contents of the meta-rptr layer. Please see the corresponding sections below for yocto and poky specific details. See http://www.stewarts.org.uk/tomsweb/raspberrypitaperemote#proper-software-with-yocto for details how to build an image from scratch using this layer.
 
 TODO:
- * switch to systemd
- * improve python scripts
  * train flirc
  * write app
 
@@ -17,15 +15,15 @@ This layer depends on:
 
     URI: http://git.yoctoproject.org/git/poky
     layers: meta, meta-poky, meta-yocto-bsp
-    branch: krogoth
+    branch: zeus
 
     URI: http://git.openembedded.org/meta-openembedded
     layers: meta-oe, meta-python, meta-networking
-    branch: krogoth
+    branch: zeus
 
     URI: http://git.yoctoproject.org/git/meta-raspberrypi
     layers: meta-raspberrypi
-    branch: master
+    branch: zeus
 
 3. Patches
 ==========
@@ -52,7 +50,8 @@ Assuming the meta-rptr layer exists at the top-level of your yocto build tree, y
 
 This adds an image called rpi-rptr-image. It expects some configuration to be defined in build/conf/local.conf. Add the following to local.conf:
 
-    MACHINE ?= "raspberrypi"
+    MACHINE = "raspberrypi"
+    DISTRO = "rptr"
     ROOT_PASSWORD = "my_password_for_root_ssh"
     WIFI_SSID = "my_ssid_name"
     WIFI_PSK = "my_ssid_pre_shared_key"
