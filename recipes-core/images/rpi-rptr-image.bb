@@ -1,8 +1,10 @@
 include recipes-core/images/core-image-minimal.bb
 
-IMAGE_FEATURES += "ssh-server-dropbear read-only-rootfs"
-IMAGE_FEATURES_remove = " debug-tweaks splash"
-IMAGE_INSTALL_append = " packagegroup-rptr"
+IMAGE_FEATURES:append = " ssh-server-dropbear allow-root-login read-only-rootfs"
+IMAGE_FEATURES:remove = " splash"
+IMAGE_INSTALL:append = " rptr-packagegroup"
+
+REPRODUCIBLE_TIMESTAMP_ROOTFS = "${@time.strftime('%s',time.gmtime())}"
 
 inherit extrausers
-EXTRA_USERS_PARAMS = "usermod -P ${ROOT_PASSWORD} root;"
+EXTRA_USERS_PARAMS = "usermod -p '${ROOT_PASSWORD_HASH}' root;"

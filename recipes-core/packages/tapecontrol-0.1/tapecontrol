@@ -83,16 +83,8 @@ def togglecmd(cmd):
     logging.info("sleeping")
     time.sleep(0.2)
 
-html='''
-<p>
-<a href=/play>play</a>
-<a href=/pause>pause</a>
-<a href=/stop>stop</a>
-<a href=/fastforward>fastforward</a>
-<a href=/rewind>rewind</a>
-<a href=/record>record</a>
-</p>
-'''
+f = open("/usr/share/tapecontrol/tapecontrol.html", "r")
+html = f.read()
 
 app = Flask(__name__)
 

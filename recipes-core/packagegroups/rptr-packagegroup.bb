@@ -4,13 +4,13 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 inherit packagegroup
 
-RDEPENDS_${PN} = "\
-    crda \
+RDEPENDS:${PN} = "\
     iptables \
     iw \
     kernel-modules \
     linux-firmware \
     readkey \
     tapecontrol \
+    wireless-regdb \
     wpa-supplicant \
 "
