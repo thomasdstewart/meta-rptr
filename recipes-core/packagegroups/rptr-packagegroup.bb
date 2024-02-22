@@ -10,6 +10,7 @@ RDEPENDS:${PN} = "\
     kernel-modules \
     linux-firmware \
     readkey \
+    swupdate \
     tapecontrol \
     wireless-regdb \
     wpa-supplicant \
