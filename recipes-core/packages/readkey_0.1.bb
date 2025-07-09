@@ -11,7 +11,8 @@ RDEPENDS:${PN} += " \
 "
 
 SRC_URI = "file://readkey.service file://readkey"
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 inherit systemd
 

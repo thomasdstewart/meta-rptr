@@ -10,7 +10,8 @@ RDEPENDS:${PN} += " \
 "
 
 SRC_URI = "file://tapecontrol.service file://tapecontrol file://tapecontrol.html"
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 inherit systemd
 
