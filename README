@@ -21,6 +21,10 @@ This layer depends on:
     layers: meta-oe, meta-python, meta-networking
     branch: walnascar
 
+    URI: https://github.com/sbabic/meta-swupdate.git
+    layers: meta-swupdate
+    branch: walnascar
+
     URI: https://git.yoctoproject.org/meta-raspberrypi
     layers: meta-raspberrypi
     branch: walnascar
